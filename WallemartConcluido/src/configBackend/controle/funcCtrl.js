@@ -1,167 +1,145 @@
-import Funcionario from "../modelo/funcionario";
+const Funcionario = require("../modelo/funcionario");
 
-export default class FuncCtrl {
-
-    gravar(requisicao, resposta) {
+class ControleFuncionario {
+    
+    async POST(requisicao, resposta) {
         resposta.type('application/json');
-        if (requisicao.method === 'POST' && requisicao.is('application/json')) {
-            const dados = requisicao.body;
-            const nomeFunc = dados.Nome_func;
-            const dataNasFunc = dados.Data_nas_func;
-            const generoFunc = dados.Genero_func;
-            const estadoCivilFunc = dados.EstadoCivil_func;
-            const rgFunc = dados.RG_func;
-            const cepFunc = dados.CEP_func;
-            const telefoneFunc = dados.Telefone_func;
-            const emailFunc = dados.Email_func;
-            const cargoFunc = dados.Cargo_func;
-            const salarioFunc = dados.Salario_func;
-            const beneficiosFunc = dados.Beneficios_func;
-            const escolaridadeFunc = dados.Escolaridade_func;
+        if (requisicao.method !== 'POST') {
+            resposta.json({
+                status: false,
+                mensagem: 'Método inválido! Utilize POST!'
+            });
+            return;
+        }
 
-            if (nomeFunc && dataNasFunc && generoFunc && estadoCivilFunc && rgFunc && cepFunc && telefoneFunc && emailFunc && cargoFunc && salarioFunc && beneficiosFunc && escolaridadeFunc) {
-                const funcionario = new Funcionario(0, nomeFunc, dataNasFunc, generoFunc, estadoCivilFunc, rgFunc, cepFunc, telefoneFunc, emailFunc, cargoFunc, salarioFunc, beneficiosFunc, escolaridadeFunc);
-                funcionario.gravar().then(() => {
-                    resposta.status(200).json({
-                        "status": true,
-                        "codigoGerado": funcionario.codigo,
-                        "mensagem": "Funcionário incluído com sucesso!"
-                    });
-                })
-                    .catch((erro) => {
-                        resposta.status(500).json({
-                            "status": false,
-                            "mensagem": "Erro ao registrar o funcionário: " + erro.message
-                        });
-                    });
-            }
-            else {
-                resposta.status(400).json({
-                    "status": false,
-                    "mensagem": "Por favor, forneça os dados do funcionário conforme a documentação da API!"
+        const dados = requisicao.body;
+        const Nome_func = dados.Nom_func;
+        const Data_nas_func = dados.Data_nas_func;
+        const Genero_func = dados.Genero_func;
+        const EstadoCivil_func = dados.EstadoCivil_func;
+        const RG_func = dados.RG_func;
+        const CEP_func = dados.CEP_func;
+        const Telefone_func = dados.Telefone_func;
+        const Email_func = dados.Email_func;
+        const Cargo_func = dados.Cargo_func;
+        const Salario_func = dados.Salario_func;
+        const Beneficios_func = dados.Beneficios_func;
+        const Escolaridade_func = dados.Escolaridade_func;
+
+        if (Nome_func && Data_nas_func && Genero_func && EstadoCivil_func && RG_func && CEP_func && Telefone_func && Email_func && Cargo_func && Salario_func && Beneficios_func && Escolaridade_func) {
+            const funcionario = new Funcionario(0, Nome_func, Data_nas_func, Genero_func, EstadoCivil_func, RG_func, CEP_func, Telefone_func, Email_func, Cargo_func, Salario_func, Beneficios_func, Escolaridade_func);
+            try {
+                await funcionario.gravar();
+                resposta.json({
+                    status: true,
+                    mensagem: 'Funcionário gravado com sucesso!',
+                    id_funcionario: funcionario.id
+                });
+            } catch (erro) {
+                resposta.json({
+                    status: false,
+                    mensagem: 'Não foi possível registrar o funcionário! ' + erro.message
                 });
             }
+        } else {
+            resposta.json({
+                status: false,
+                mensagem: "Há campos faltando que devem ser obrigatoriamente preenchidos!"
+            });
         }
-        else {
-            resposta.status(400).json({
-                "status": false,
-                "mensagem": "Por favor, utilize o método POST para cadastrar um funcionário!"
+    }
+    
+
+
+    async PUTPATCH(requisicao, resposta) {
+        resposta.type('application/json');
+
+        if (requisicao.method !== 'PUT' && requisicao.method !== 'PATCH') {
+            resposta.json({
+                status: false,
+                mensagem: 'Método inválido! Utilize o método PUT ou PATCH!'
+            });
+            return;
+        }
+        const dados = requisicao.body;
+        const { id, Nome_func, Data_nas_func, Genero_func, EstadoCivil_func, RG_func, CEP_func, Telefone_func, Email_func, Cargo_func, Salario_func, Beneficios_func, Escolaridade_func } = dados;
+        if (id && Nome_func && Data_nas_func && Genero_func && EstadoCivil_func && RG_func && CEP_func && Telefone_func && Email_func && Cargo_func && Salario_func && Beneficios_func && Escolaridade_func) {
+            const funcionario = new Funcionario(id, Nome_func, Data_nas_func, Genero_func, EstadoCivil_func, RG_func, CEP_func, Telefone_func, Email_func, Cargo_func, Salario_func, Beneficios_func, Escolaridade_func);
+            try {
+                await funcionario.atualizar();
+                resposta.json({
+                    status: true,
+                    mensagem: 'Funcionário atualizado com sucesso!'
+                });
+            } catch (erro) {
+                resposta.json({
+                    status: false,
+                    mensagem: 'Não foi possível atualizar o funcionário! ' + erro.message
+                });
+            }
+        } else {
+            resposta.json({
+                status: false,
+                mensagem: "Há campos faltando que devem ser obrigatoriamente preenchidos!"
             });
         }
     }
 
-    atualizar(requisicao, resposta) {
+
+    async DELETE(requisicao, resposta) {
         resposta.type('application/json');
-        if ((requisicao.method === 'PUT' || requisicao.method === 'PATCH') && requisicao.is('application/json')) {
-            const dados = requisicao.body;
-            const codigo = dados.codigo;
-            const nomeFunc = dados.Nome_func;
-            const dataNasFunc = dados.Data_nas_func;
-            const generoFunc = dados.Genero_func;
-            const estadoCivilFunc = dados.EstadoCivil_func;
-            const rgFunc = dados.RG_func;
-            const cepFunc = dados.CEP_func;
-            const telefoneFunc = dados.Telefone_func;
-            const emailFunc = dados.Email_func;
-            const cargoFunc = dados.Cargo_func;
-            const salarioFunc = dados.Salario_func;
-            const beneficiosFunc = dados.Beneficios_func;
-            const escolaridadeFunc = dados.Escolaridade_func;
-            
-            if (codigo && nomeFunc && dataNasFunc && generoFunc && estadoCivilFunc && rgFunc && cepFunc && telefoneFunc && emailFunc && cargoFunc && salarioFunc && beneficiosFunc && escolaridadeFunc) {
-                const funcionario = new Funcionario(codigo, nomeFunc, dataNasFunc, generoFunc, estadoCivilFunc, rgFunc, cepFunc, telefoneFunc, emailFunc, cargoFunc, salarioFunc, beneficiosFunc, escolaridadeFunc);
-                funcionario.atualizar().then(() => {
-                    resposta.status(200).json({
-                        "status": true,
-                        "mensagem": "Funcionário atualizado com sucesso!"
-                    });
-                })
-                    .catch((erro) => {
-                        resposta.status(500).json({
-                            "status": false,
-                            "mensagem": "Erro ao atualizar o funcionário: " + erro.message
-                        });
-                    });
-            }
-            else {
-                resposta.status(400).json({
-                    "status": false,
-                    "mensagem": "Por favor, informe todos os dados do funcionário conforme a documentação da API!"
+        if (requisicao.method !== 'DELETE') {
+            resposta.json({
+                status: false,
+                mensagem: 'Método inválido! Utilize o método DELETE!'
+            });
+            return;
+        }
+        const dados = requisicao.body;
+        const { id } = dados;
+        if (id) {
+            const funcionario = new Funcionario(id);
+            try {
+                await funcionario.excluir();
+                resposta.json({
+                    status: true,
+                    mensagem: 'Funcionário excluído com sucesso!'
+                });
+            } catch (erro) {
+                resposta.json({
+                    status: false,
+                    mensagem: 'Não foi possível excluir o funcionário! ' + erro.message
                 });
             }
-        }
-        else {
-            resposta.status(400).json({
-                "status": false,
-                "mensagem": "Por favor, utilize os métodos PUT ou PATCH para atualizar um funcionário!"
+        } else {
+            resposta.json({
+                status: false,
+                mensagem: "O id deve ser informado!"
             });
         }
     }
 
-    excluir(requisicao, resposta) {
-        resposta.type('application/json');
-        if (requisicao.method === 'DELETE' && requisicao.is('application/json')) {
-            const dados = requisicao.body;
-            const codigo = dados.codigo;
-            if (codigo) {
-                const funcionario = new Funcionario(codigo);
-                funcionario.excluir().then(() => {
-                    resposta.status(200).json({
-                        "status": true,
-                        "mensagem": "Funcionário excluído com sucesso!"
-                    });
-                })
-                    .catch((erro) => {
-                        resposta.status(500).json({
-                            "status": false,
-                            "mensagem": "Erro ao excluir o funcionário: " + erro.message
-                        });
-                    });
-            }
-            else {
-                resposta.status(400).json({
-                    "status": false,
-                    "mensagem": "Por favor, informe o código do funcionário!"
-                });
-            }
-        }
-        else {
-            resposta.status(400).json({
-                "status": false,
-                "mensagem": "Por favor, utilize o método DELETE para excluir um funcionário!"
-            });
-        }
-    }
 
-    consultar(requisicao, resposta) {
+    async GET(requisicao, resposta) {
         resposta.type('application/json');
-        let termo = requisicao.params.termo;
-        if (!termo) {
-            termo = "";
+        if (requisicao.method !== 'GET') {
+            resposta.json({
+                status: false,
+                mensagem: 'Método inválido! Utilize o método GET!'
+            });
+            return;
         }
-        if (requisicao.method === "GET") {
-            const funcionario = new Funcionario();
-            funcionario.consultar(termo).then((listaFuncionarios) => {
-                resposta.json(
-                    {
-                        status: true,
-                        listaFuncionarios
-                    });
-            })
-                .catch((erro) => {
-                    resposta.json(
-                        {
-                            status: false,
-                            mensagem: "Não foi possível obter os funcionários: " + erro.message
-                        }
-                    );
-                });
-        }
-        else {
-            resposta.status(400).json({
-                "status": false,
-                "mensagem": "Por favor, utilize o método GET para consultar funcionários!"
+        const funcionario = new Funcionario(0);
+        try {
+            const listaFuncionarios = await funcionario.consultar();
+            resposta.json(listaFuncionarios);
+        } catch (erro) {
+            resposta.json({
+                status: false,
+                mensagem: 'Não foi possível mostrar os funcionários! ' + erro.message
             });
         }
     }
 }
+
+module.exports = ControleFuncionario;

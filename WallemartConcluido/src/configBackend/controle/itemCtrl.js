@@ -1,154 +1,142 @@
-import Item from "../modelo/item";
+const Item = require("../modelo/item.js");
 
-export default class ItemCtrl {
-
-    gravar(requisicao, resposta) {
+class ControleItem {
+    
+    async POST(requisicao, resposta) {
         resposta.type('application/json');
-        if (requisicao.method === 'POST' && requisicao.is('application/json')) {
-            const dados = requisicao.body;
-            const nomeProd = dados.Nome_prod;
-            const dataFab = dados.Data_fab;
-            const dataVen = dados.Data_ven;
-            const tipoProd = dados.Tipo_prod;
-            const precoProd = dados.Preco_prod;
-            const qtdeProd = dados.Qtde_prod;
+        if (requisicao.method !== 'POST') {
+            resposta.json({
+                status: false,
+                mensagem: 'Método inválido! Utilize POST!'
+            });
+            return;
+        }
 
-            if (nomeProd && dataFab && dataVen && tipoProd && precoProd && qtdeProd >= 0) {
-                const item = new Item(0, nomeProd, dataFab, dataVen, tipoProd, precoProd, qtdeProd);
-                item.gravar().then(() => {
-                    resposta.status(200).json({
-                        "status": true,
-                        "codigoGerado": item.codigo,
-                        "mensagem": "Item incluído com sucesso!"
-                    });
-                })
-                    .catch((erro) => {
-                        resposta.status(500).json({
-                            "status": false,
-                            "mensagem": "Erro ao registrar o item: " + erro.message
-                        });
-                    });
-            }
-            else {
-                resposta.status(400).json({
-                    "status": false,
-                    "mensagem": "Por favor, forneça os dados do item conforme a documentação da API!"
+        const dados = requisicao.body;
+        const Nome_prod = dados.Nome_prod;
+        const Data_fab = dados.Data_fab;
+        const Data_ven = dados.Data_ven;
+        const Tipo_prod = dados.Tipo_prod;
+        const Preco_prod = dados.Preco_prod;
+        const Qtde_prod = dados.Qtde_prod;
+
+        if (Nome_prod && Data_fab && Data_ven && Tipo_prod && Preco_prod && Qtde_prod >= 0) {
+            const item = new Item(0, Nome_prod, Data_fab, Data_ven, Tipo_prod, Preco_prod, Qtde_prod);
+            try {
+                await item.gravar();
+                resposta.json({
+                    status: true,
+                    mensagem: 'Item gravado com sucesso!',
+                    idGerado: item.id
+                });
+            } catch (erro) {
+                resposta.json({
+                    status: false,
+                    mensagem: 'Não foi possível registrar o item! ' + erro.message
                 });
             }
+        } else {
+            resposta.json({
+                status: false,
+                mensagem: "Há campos faltando que devem ser obrigatoriamente preenchidos!"
+            });
         }
-        else {
-            resposta.status(400).json({
-                "status": false,
-                "mensagem": "Por favor, utilize o método POST para cadastrar um item!"
+    }
+    
+
+    async PUTPATCH(requisicao, resposta) {
+        resposta.type('application/json');
+
+        if (requisicao.method !== 'PUT' && requisicao.method !== 'PATCH') {
+            resposta.json({
+                status: false,
+                mensagem: 'Método inválido! Utilize o método PUT ou PATCH!'
+            });
+            return;
+        }
+        const dados = requisicao.body;
+        const { id, Nome_prod, Data_fab, Data_ven, Tipo_prod, Preco_prod, Qtde_prod } = dados;
+        if (id && Nome_prod && Data_fab && Data_ven && Tipo_prod && Preco_prod && Qtde_prod >= 0) {
+            const item = new Item(id, Nome_prod, Data_fab, Data_ven, Tipo_prod, Preco_prod, Qtde_prod);
+            try {
+                await item.atualizar();
+                resposta.json({
+                    status: true,
+                    mensagem: 'Item atualizado com sucesso!'
+                });
+            } catch (erro) {
+                resposta.json({
+                    status: false,
+                    mensagem: 'Não foi possível atualizar o item! ' + erro.message
+                });
+            }
+        } else {
+            resposta.json({
+                status: false,
+                mensagem: "Há campos faltando que devem ser obrigatoriamente preenchidos!"
             });
         }
     }
 
-    atualizar(requisicao, resposta) {
+
+    async DELETE(requisicao, resposta) {
         resposta.type('application/json');
-        if ((requisicao.method === 'PUT' || requisicao.method === 'PATCH') && requisicao.is('application/json')) {
-            const dados = requisicao.body;
-            const codigo = dados.codigo;
-            const nomeProd = dados.Nome_prod;
-            const dataFab = dados.Data_fab;
-            const dataVen = dados.Data_ven;
-            const tipoProd = dados.Tipo_prod;
-            const precoProd = dados.Preco_prod;
-            const qtdeProd = dados.Qtde_prod;
-            if (codigo && nomeProd && dataFab && dataVen && tipoProd && precoProd && qtdeProd >= 0) {
-                const item = new Item(codigo, nomeProd, dataFab, dataVen, tipoProd, precoProd, qtdeProd);
-                item.atualizar().then(() => {
-                    resposta.status(200).json({
-                        "status": true,
-                        "mensagem": "Item atualizado com sucesso!"
-                    });
-                })
-                    .catch((erro) => {
-                        resposta.status(500).json({
-                            "status": false,
-                            "mensagem": "Erro ao atualizar o item: " + erro.message
-                        });
-                    });
-            }
-            else {
-                resposta.status(400).json({
-                    "status": false,
-                    "mensagem": "Por favor, informe todos os dados do item conforme a documentação da API!"
+        if (requisicao.method !== 'DELETE') {
+            resposta.json({
+                status: false,
+                mensagem: 'Método inválido! Utilize o método DELETE!'
+            });
+            return;
+        }
+        const dados = requisicao.body;
+        const { id } = dados;
+        if (id) {
+            const item = new Item(id);
+            try {
+                await item.excluir();
+                resposta.json({
+                    status: true,
+                    mensagem: 'Item excluído com sucesso!'
+                });
+            } catch (erro) {
+                resposta.json({
+                    status: false,
+                    mensagem: 'Não foi possível excluir o item! ' + erro.message
                 });
             }
-        }
-        else {
-            resposta.status(400).json({
-                "status": false,
-                "mensagem": "Por favor, utilize os métodos PUT ou PATCH para atualizar um item!"
+        } else {
+            resposta.json({
+                status: false,
+                mensagem: "O código deve ser informado!"
             });
         }
     }
 
-    excluir(requisicao, resposta) {
-        resposta.type('application/json');
-        if (requisicao.method === 'DELETE' && requisicao.is('application/json')) {
-            const dados = requisicao.body;
-            const codigo = dados.codigo;
-            if (codigo) {
-                const item = new Item(codigo);
-                item.excluir().then(() => {
-                    resposta.status(200).json({
-                        "status": true,
-                        "mensagem": "Item excluído com sucesso!"
-                    });
-                })
-                    .catch((erro) => {
-                        resposta.status(500).json({
-                            "status": false,
-                            "mensagem": "Erro ao excluir o item: " + erro.message
-                        });
-                    });
-            }
-            else {
-                resposta.status(400).json({
-                    "status": false,
-                    "mensagem": "Por favor, informe o código do item!"
-                });
-            }
-        }
-        else {
-            resposta.status(400).json({
-                "status": false,
-                "mensagem": "Por favor, utilize o método DELETE para excluir um item!"
-            });
-        }
-    }
 
-    consultar(requisicao, resposta) {
+    async GET(requisicao, resposta) {
         resposta.type('application/json');
+        if (requisicao.method !== 'GET') {
+            resposta.json({
+                status: false,
+                mensagem: 'Método inválido! Utilize o método GET!'
+            });
+            return;
+        }
         let termo = requisicao.params.termo;
         if (!termo) {
             termo = "";
         }
-        if (requisicao.method === "GET") {
-            const item = new Item();
-            item.consultar(termo).then((listaItens) => {
-                resposta.json(
-                    {
-                        status: true,
-                        listaItens
-                    });
-            })
-                .catch((erro) => {
-                    resposta.json(
-                        {
-                            status: false,
-                            mensagem: "Não foi possível obter os itens: " + erro.message
-                        }
-                    );
-                });
-        }
-        else {
-            resposta.status(400).json({
-                "status": false,
-                "mensagem": "Por favor, utilize o método GET para consultar itens!"
+        const item = new Item();
+        try {
+            const listaItens = await item.consultar(termo);
+            resposta.json(listaItens);
+        } catch (erro) {
+            resposta.json({
+                status: false,
+                mensagem: 'Não foi possível mostrar os itens! ' + erro.message
             });
         }
     }
 }
+
+module.exports = ControleItem;

@@ -1,88 +1,88 @@
-import ItemDAO from "../persistencia/itemDAO";
+const ItemDAO = require("../persistencia/itemDAO");
 
-export default class Item {
-    #codigo;
-    #nomeProd;
-    #dataFab;
-    #dataVen;
-    #tipoProd;
-    #precoProd;
-    #qtdeProd;
+class Item {
+    #id;
+    #Nome_prod;
+    #Data_fab;
+    #Data_ven;
+    #Tipo_prod;
+    #Preco_prod;
+    #Qtde_prod;
 
-    constructor(codigo = 0, nomeProd = "", dataFab = "", dataVen = "", tipoProd = "", precoProd = "", qtdeProd = 0) {
-        this.#codigo = codigo;
-        this.#nomeProd = nomeProd;
-        this.#dataFab = dataFab;
-        this.#dataVen = dataVen;
-        this.#tipoProd = tipoProd;
-        this.#precoProd = precoProd;
-        this.#qtdeProd = qtdeProd;
+    constructor(id, Nome_prod, Data_fab, Data_ven, Tipo_prod, Preco_prod, Qtde_prod) {
+        this.#id = id;
+        this.#Nome_prod = Nome_prod;
+        this.#Data_fab = Data_fab;
+        this.#Data_ven = Data_ven;
+        this.#Tipo_prod = Tipo_prod;
+        this.#Preco_prod = Preco_prod;
+        this.#Qtde_prod = Qtde_prod;
     }
 
-    get codigo() {
-        return this.#codigo;
+    get id() {
+        return this.#id;
     }
-    set codigo(novoCodigo) {
-        this.#codigo = novoCodigo;
-    }
-
-    get nomeProd() {
-        return this.#nomeProd;
+    set id(novoid) {
+        this.#id = novoid;
     }
 
-    set nomeProd(novoNomeProd) {
-        this.#nomeProd = novoNomeProd;
+    get Nome_prod() {
+        return this.#Nome_prod;
     }
 
-    get dataFab() {
-        return this.#dataFab;
+    set Nome_prod(novoNome_prod) {
+        this.#Nome_prod = novoNome_prod;
     }
 
-    set dataFab(novaDataFab) {
-        this.#dataFab = novaDataFab;
+    get Data_fab() {
+        return this.#Data_fab;
     }
 
-    get dataVen() {
-        return this.#dataVen;
+    set Data_fab(novaData_fab) {
+        this.#Data_fab = novaData_fab;
     }
 
-    set dataVen(novaDataVen) {
-        this.#dataVen = novaDataVen;
+    get Data_ven() {
+        return this.#Data_ven;
     }
 
-    get tipoProd() {
-        return this.#tipoProd;
+    set Data_ven(novaData_ven) {
+        this.#Data_ven = novaData_ven;
     }
 
-    set tipoProd(novoTipoProd) {
-        this.#tipoProd = novoTipoProd;
+    get Tipo_prod() {
+        return this.#Tipo_prod;
     }
 
-    get precoProd() {
-        return this.#precoProd;
+    set Tipo_prod(novoTipo_prod) {
+        this.#Tipo_prod = novoTipo_prod;
     }
 
-    set precoProd(novoPrecoProd) {
-        this.#precoProd = novoPrecoProd;
+    get Preco_prod() {
+        return this.#Preco_prod;
     }
 
-    get qtdeProd() {
-        return this.#qtdeProd;
+    set Preco_prod(novoPreco_prod) {
+        this.#Preco_prod = novoPreco_prod;
     }
 
-    set qtdeProd(novaQtdeProd) {
-        this.#qtdeProd = novaQtdeProd;
+    get Qtde_prod() {
+        return this.#Qtde_prod;
+    }
+
+    set Qtde_prod(novaQtde_prod) {
+        this.#Qtde_prod = novaQtde_prod;
     }
 
     toJSON() {
         return {
-            codigo: this.#codigo,
-            nomeProd: this.#nomeProd,
-            dataFab: this.#dataFab,
-            dataVen: this.#dataVen,
-            tipoProd: this.#tipoProd,
-            precoProd: this.#precoProd,
-            qtdeProd: this.#qtdeProd,
+            id: this.#id,
+            Nome_prod: this.#Nome_prod,
+            Data_fab: this.#Data_fab,
+            Data_ven: this.#Data_ven,
+            Tipo_prod: this.#Tipo_prod,
+            Preco_prod: this.#Preco_prod,
+            Qtde_prod: this.#Qtde_prod,
         }
     }
 
@@ -96,7 +96,7 @@ export default class Item {
         await itemDAO.excluir(this);
     }
 
-    async alterar() {
+    async atualizar() {
         const itemDAO = new ItemDAO();
         await itemDAO.atualizar(this);
     }
@@ -106,3 +106,5 @@ export default class Item {
         return await itemDAO.consultar(termo);
     }
 }
+
+module.exports = Item;

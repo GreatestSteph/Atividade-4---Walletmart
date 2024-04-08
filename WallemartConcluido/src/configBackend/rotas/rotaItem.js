@@ -1,14 +1,9 @@
-import { Router } from "express";
-import ItemCtrl from "../controle/itemCtrl";
+const { Router } = require('express');
+const ControleItem = require("../controle/itemCtrl.js");
 
-const itemControle = new ItemCtrl();
 const rotaItem = new Router();
+const itemControle = new ControleItem();
 
-rotaItem.get('/',itemControle.consultar)
-.get('/:termo', itemControle.consultar)
-.post('/',itemControle.gravar)
-.patch('/',itemControle.atualizar)
-.put('/',itemControle.atualizar)
-.delete('/',itemControle.excluir);
+rotaItem.get('/', itemControle.GET).post('/', itemControle.POST).put('/', itemControle.PUTPATCH).patch('/', itemControle.PUTPATCH).delete('/', itemControle.DELETE);
 
-export default rotaItem;
+module.exports = rotaItem;

@@ -1,14 +1,11 @@
-import { Router } from "express";
-import FuncCtrl from "../controle/funcCtrl";
+const { Router } = require('express');
+const ControleFuncionario = require("../controle/funcCtrl")
 
-const funcionarioControle = new FuncCtrl();
+
 const rotaFuncionario = new Router();
+const funcionarioControle = new ControleFuncionario();
 
-rotaFuncionario.get('/',funcionarioControle.consultar)
-.get('/:termo', funcionarioControle.consultar)
-.post('/',funcionarioControle.gravar)
-.patch('/',funcionarioControle.atualizar)
-.put('/',funcionarioControle.atualizar)
-.delete('/',funcionarioControle.excluir);
 
-export default rotaFuncionario;
+rotaFuncionario.get('/', funcionarioControle.GET).post('/', funcionarioControle.POST).put('/', funcionarioControle.PUTPATCH).patch('/', funcionarioControle.PUTPATCH).delete('/', funcionarioControle.DELETE);
+
+module.exports = rotaFuncionario;

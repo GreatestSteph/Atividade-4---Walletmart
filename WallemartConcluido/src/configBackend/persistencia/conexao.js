@@ -1,7 +1,7 @@
-import mysql from 'mysql2/promise'
+const mysql = require('mysql2/promise');
 
-export default async function conecta(){
-    if (global.poolConexos){
+async function conecta(){
+    if (global.poolConexoes){
         return await global.poolConexoes.getConnection();
     }
 
@@ -22,3 +22,5 @@ export default async function conecta(){
     global.poolConexoes = pool; 
     return await pool.getConnection();
 }
+
+module.exports = conecta;

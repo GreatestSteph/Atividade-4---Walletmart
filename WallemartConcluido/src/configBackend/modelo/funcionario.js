@@ -1,154 +1,154 @@
-import FuncionarioDAO from "../persistencia/funcionarioDAO";
+const FuncionarioDAO = require("../persistencia/funcionarioDAO");
 
-export default class Funcionario {
-    #codigo;
-    #nomeFunc;
-    #dataNasFunc;
-    #generoFunc;
-    #estadoCivilFunc;
-    #rgFunc;
-    #cepFunc;
-    #telefoneFunc;
-    #emailFunc;
-    #cargoFunc;
-    #salarioFunc;
-    #beneficiosFunc;
-    #escolaridadeFunc;
+class Funcionario {
+    #id;
+    #Nome_func;
+    #Data_nas_func;
+    #Genero_func;
+    #EstadoCivil_func;
+    #RG_func;
+    #CEP_func;
+    #Telefone_func;
+    #Email_func;
+    #Cargo_func;
+    #Salario_func;
+    #Beneficios_func;
+    #Escolaridade_func;
 
-    constructor(codigo = 0, nomeFunc = "", dataNasFunc = "", generoFunc = "", estadoCivilFunc = "", rgFunc = "", cepFunc = "", telefoneFunc = "", emailFunc = "", cargoFunc = "", salarioFunc = "", beneficiosFunc = "", escolaridadeFunc = "") {
-        this.#codigo = codigo;
-        this.#nomeFunc = nomeFunc;
-        this.#dataNasFunc = dataNasFunc;
-        this.#generoFunc = generoFunc;
-        this.#estadoCivilFunc = estadoCivilFunc;
-        this.#rgFunc = rgFunc;
-        this.#cepFunc = cepFunc;
-        this.#telefoneFunc = telefoneFunc;
-        this.#emailFunc = emailFunc;
-        this.#cargoFunc = cargoFunc;
-        this.#salarioFunc = salarioFunc;
-        this.#beneficiosFunc = beneficiosFunc;
-        this.#escolaridadeFunc = escolaridadeFunc;
+    constructor(id, Nome_func, Data_nas_func, Genero_func, EstadoCivil_func, RG_func, CEP_func, Telefone_func, Email_func, Cargo_func, Salario_func, Beneficios_func, Escolaridade_func) {
+        this.#id = id;
+        this.#Nome_func = Nome_func;
+        this.#Data_nas_func = Data_nas_func;
+        this.#Genero_func = Genero_func;
+        this.#EstadoCivil_func = EstadoCivil_func;
+        this.#RG_func = RG_func;
+        this.#CEP_func = CEP_func;
+        this.#Telefone_func = Telefone_func;
+        this.#Email_func = Email_func;
+        this.#Cargo_func = Cargo_func;
+        this.#Salario_func = Salario_func;
+        this.#Beneficios_func = Beneficios_func;
+        this.#Escolaridade_func = Escolaridade_func;
     }
 
-    get codigo() {
-        return this.#codigo;
+    get id() {
+        return this.#id;
     }
-    set codigo(novoCodigo) {
-        this.#codigo = novoCodigo;
-    }
-
-    get nomeFunc() {
-        return this.#nomeFunc;
+    set id(novoid) {
+        this.#id = novoid;
     }
 
-    set nomeFunc(novoNomeFunc) {
-        this.#nomeFunc = novoNomeFunc;
+    get Nome_func() {
+        return this.#Nome_func;
     }
 
-    get dataNasFunc() {
-        return this.#dataNasFunc;
+    set Nome_func(novoNome_func) {
+        this.#Nome_func = novoNome_func;
     }
 
-    set dataNasFunc(novaDataNasFunc) {
-        this.#dataNasFunc = novaDataNasFunc;
+    get Data_nas_func() {
+        return this.#Data_nas_func;
     }
 
-    get generoFunc() {
-        return this.#generoFunc;
+    set Data_nas_func(novaData_nas_func) {
+        this.#Data_nas_func = novaData_nas_func;
     }
 
-    set generoFunc(novoGeneroFunc) {
-        this.#generoFunc = novoGeneroFunc;
+    get Genero_func() {
+        return this.#Genero_func;
     }
 
-    get estadoCivilFunc() {
-        return this.#estadoCivilFunc;
+    set Genero_func(novoGenero_func) {
+        this.#Genero_func = novoGenero_func;
     }
 
-    set estadoCivilFunc(novoEstadoCivilFunc) {
-        this.#estadoCivilFunc = novoEstadoCivilFunc;
+    get EstadoCivil_func() {
+        return this.#EstadoCivil_func;
     }
 
-    get rgFunc() {
-        return this.#rgFunc;
+    set EstadoCivil_func(novoEstadoCivil_func) {
+        this.#EstadoCivil_func = novoEstadoCivil_func;
     }
 
-    set rgFunc(novoRgFunc) {
-        this.#rgFunc = novoRgFunc;
+    get RG_func() {
+        return this.#RG_func;
     }
 
-    get cepFunc() {
-        return this.#cepFunc;
+    set RG_func(novoRG_func) {
+        this.#RG_func = novoRG_func;
     }
 
-    set cepFunc(novoCepFunc) {
-        this.#cepFunc = novoCepFunc;
+    get CEP_func() {
+        return this.#CEP_func;
     }
 
-    get telefoneFunc() {
-        return this.#telefoneFunc;
+    set CEP_func(novoCEP_func) {
+        this.#CEP_func = novoCEP_func;
     }
 
-    set telefoneFunc(novoTelefoneFunc) {
-        this.#telefoneFunc = novoTelefoneFunc;
+    get Telefone_func() {
+        return this.#Telefone_func;
     }
 
-    get emailFunc() {
-        return this.#emailFunc;
+    set Telefone_func(novoTelefone_func) {
+        this.#Telefone_func = novoTelefone_func;
     }
 
-    set emailFunc(novoEmailFunc) {
-        this.#emailFunc = novoEmailFunc;
+    get Email_func() {
+        return this.#Email_func;
     }
 
-    get cargoFunc() {
-        return this.#cargoFunc;
+    set Email_func(novoEmail_func) {
+        this.#Email_func = novoEmail_func;
     }
 
-    set cargoFunc(novoCargoFunc) {
-        this.#cargoFunc = novoCargoFunc;
+    get Cargo_func() {
+        return this.#Cargo_func;
     }
 
-    get salarioFunc() {
-        return this.#salarioFunc;
+    set Cargo_func(novoCargo_func) {
+        this.#Cargo_func = novoCargo_func;
     }
 
-    set salarioFunc(novoSalarioFunc) {
-        this.#salarioFunc = novoSalarioFunc;
+    get Salario_func() {
+        return this.#Salario_func;
     }
 
-    get beneficiosFunc() {
-        return this.#beneficiosFunc;
+    set Salario_func(novoSalario_func) {
+        this.#Salario_func = novoSalario_func;
     }
 
-    set beneficiosFunc(novosBeneficiosFunc) {
-        this.#beneficiosFunc = novosBeneficiosFunc;
+    get Beneficios_func() {
+        return this.#Beneficios_func;
     }
 
-    get escolaridadeFunc() {
-        return this.#escolaridadeFunc;
+    set Beneficios_func(novosBeneficios_func) {
+        this.#Beneficios_func = novosBeneficios_func;
     }
 
-    set escolaridadeFunc(novaEscolaridadeFunc) {
-        this.#escolaridadeFunc = novaEscolaridadeFunc;
+    get Escolaridade_func() {
+        return this.#Escolaridade_func;
+    }
+
+    set Escolaridade_func(novaEscolaridade_func) {
+        this.#Escolaridade_func = novaEscolaridade_func;
     }
 
     toJSON() {
         return {
-            codigo: this.#codigo,
-            nomeFunc: this.#nomeFunc,
-            dataNasFunc: this.#dataNasFunc,
-            generoFunc: this.#generoFunc,
-            estadoCivilFunc: this.#estadoCivilFunc,
-            rgFunc: this.#rgFunc,
-            cepFunc: this.#cepFunc,
-            telefoneFunc: this.#telefoneFunc,
-            emailFunc: this.#emailFunc,
-            cargoFunc: this.#cargoFunc,
-            salarioFunc: this.#salarioFunc,
-            beneficiosFunc: this.#beneficiosFunc,
-            escolaridadeFunc: this.#escolaridadeFunc,
+            id: this.#id,
+            Nome_func: this.#Nome_func,
+            Data_nas_func: this.#Data_nas_func,
+            Genero_func: this.#Genero_func,
+            EstadoCivil_func: this.#EstadoCivil_func,
+            RG_func: this.#RG_func,
+            CEP_func: this.#CEP_func,
+            Telefone_func: this.#Telefone_func,
+            Email_func: this.#Email_func,
+            Cargo_func: this.#Cargo_func,
+            Salario_func: this.#Salario_func,
+            Beneficios_func: this.#Beneficios_func,
+            Escolaridade_func: this.#Escolaridade_func,
         }
     }
 
@@ -162,7 +162,7 @@ export default class Funcionario {
         await funcionarioDAO.excluir(this);
     }
 
-    async alterar() {
+    async atualizar() {
         const funcionarioDAO = new FuncionarioDAO();
         await funcionarioDAO.atualizar(this);
     }
@@ -172,3 +172,5 @@ export default class Funcionario {
         return await funcionarioDAO.consultar(termo);
     }
 }
+
+module.exports = Funcionario;
