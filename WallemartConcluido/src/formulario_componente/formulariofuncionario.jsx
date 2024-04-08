@@ -58,21 +58,27 @@ export default function FormularioFuncionarios(props) {
     });
 
     function enviarFuncionarioBackend(){
-        fetch(urlBaseFuncionario, {
+        return fetch(urlBaseFuncionario, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(funcionario),
         })
-        .then(resposta_funcionario => resposta_funcionario.json)
+        .then(resposta_funcionario => {
+            if (!resposta_funcionario.ok) {
+                throw new Error('Erro ao enviar dados para o servidor');
+            }
+            return resposta_funcionario.json();
+        })
         .then(resposta_funcionario => {
             alert(resposta_funcionario.mensagem);
-            return resposta_funcionario.status;
+            return true;
         })
         .catch(erro => {
-            alert('Não foi possível estabelecer uma comunicação com o backend' + erro.message);
+            alert('Não foi possível estabelecer uma comunicação com o backend: ' + erro.message);
             return false;
         });
     }
+
 
     const [valido, setValidado] = useState(false);
 

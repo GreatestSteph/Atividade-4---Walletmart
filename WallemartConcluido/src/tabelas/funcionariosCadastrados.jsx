@@ -10,7 +10,6 @@ export default function ExibirCadastroFuncionarios(props) {
     const [funcionarioSelecionado, setFuncionarioSelecionado] = useState({});
     const [modoEdicaoFuncionario, setModoEdicaoFuncionario] = useState(false);
 
-
     useEffect(() => {
         fetch(urlBaseFuncionario,{method:"GET"})
         .then(resposta_funcionario => resposta_funcionario.json())

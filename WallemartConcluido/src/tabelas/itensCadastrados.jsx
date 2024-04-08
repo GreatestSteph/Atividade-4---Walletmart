@@ -10,7 +10,7 @@ export default function ExibirCadastroItens(props) {
     const [itemSelecionado, setItemSelecionado] = useState({});
     const [modoEdicaoItem, setModoEdicaoItem] = useState(false);
 
-    useEffect(() => { //ou aqui
+    useEffect(() => {
         fetch(urlBaseItem,{method:"GET"})
         .then(resposta_item => resposta_item.json())
         .then(backend_item => setListaItens(backend_item));

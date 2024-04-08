@@ -51,20 +51,20 @@ export default function FormularioItens(props) {
         Qtde_prod: "",
     });
 
-    function enviarItemBackend() { //o problema deve estar aq
+    function enviarItemBackend() { 
         return fetch(urlBaseItem, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(item),
         })
-        .then(resposta => {
-            if (!resposta.ok) {
+        .then(resposta_item => {
+            if (!resposta_item.ok) {
                 throw new Error('Erro ao enviar dados para o servidor');
             }
-            return resposta.json();
+            return resposta_item.json();
         })
-        .then(resposta_json => {
-            alert(resposta_json.mensagem);
+        .then(resposta_item => {
+            alert(resposta_item.mensagem);
             return true;
         })
         .catch(erro => {
