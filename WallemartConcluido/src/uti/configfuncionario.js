@@ -1,3 +1,3 @@
-const urlBaseFuncionario = 'http://localhost:3000/funcionariobackend'
+const urlBaseFuncionario = 'http://localhost:3001/funcionariobackend'
 
 export default urlBaseFuncionario
