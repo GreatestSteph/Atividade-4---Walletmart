@@ -10,11 +10,12 @@ export default function ExibirCadastroFuncionarios(props) {
     const [funcionarioSelecionado, setFuncionarioSelecionado] = useState({});
     const [modoEdicaoFuncionario, setModoEdicaoFuncionario] = useState(false);
 
-    useEffect(() => {
+    //ok
+    useEffect(()=>{
         fetch(urlBaseFuncionario,{method:"GET"})
-        .then(resposta_funcionario => resposta_funcionario.json())
-        .then(backend_funcionario => setListaFuncionarios(backend_funcionario));
-    }, []);
+        .then(resposta => resposta.json())
+        .then(funcionario => setListaFuncionarios(funcionario));
+    },[]);
 
 
     if (exibirTabelaFuncionarios) {

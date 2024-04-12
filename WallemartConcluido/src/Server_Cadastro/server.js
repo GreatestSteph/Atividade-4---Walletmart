@@ -1,16 +1,16 @@
-import express from 'express'; 
+import express from 'express';
+import cors from 'cors';
 import rotasdofuncionario from './rotas/rotasdofuncionario.js';
 import rotasdoitem from './rotas/rotasdoitem.js';
 import funcionarioclasse from "./modelo/funcionario.js"
 import itemclasse from './modelo/item.js';
-
 
 const localizaçaohostname = 'localhost'; 
 const numeroporta = 3001; //numero porta
 const aplicacao = express();  
 
 aplicacao.use(express.urlencoded({extended: true})); 
-
+aplicacao.use(cors()); // Habilitando o CORS para todas as origens
 
 aplicacao.get('/', (requisicao, resposta) => { 
     resposta.redirect('http://localhost:3000/'); 
@@ -27,6 +27,7 @@ aplicacao.listen(numeroporta, localizaçaohostname, () => {
 aplicacao.use(express.json());
 aplicacao.use('/funcionariobackend', rotasdofuncionario)
 aplicacao.use('/itembackend', rotasdoitem)
+
 //ate aqui ta ok
 //-------------------------------------------------------------------------------------------------------
 

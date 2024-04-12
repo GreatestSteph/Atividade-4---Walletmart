@@ -57,26 +57,47 @@ export default function FormularioFuncionarios(props) {
         Escolaridade_func: "",
     });
 
-    function enviarFuncionarioBackend(){
-        return fetch(urlBaseFuncionario, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(funcionario),
-        })
-        .then(resposta_funcionario => {
-            if (!resposta_funcionario.ok) {
+    //ta funcionando
+    async function enviarFuncionarioBackend() {
+        try {
+            const resposta = await fetch(urlBaseFuncionario, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(funcionario),
+            });
+    
+            if (!resposta.ok) {
                 throw new Error('Erro ao enviar dados para o servidor');
             }
-            return resposta_funcionario.json();
-        })
-        .then(resposta_funcionario => {
+    
+            const resposta_funcionario = await resposta.json();
             alert(resposta_funcionario.mensagem);
             return true;
-        })
-        .catch(erro => {
+        } catch (erro) {
             alert('Não foi possível estabelecer uma comunicação com o backend: ' + erro.message);
             return false;
-        });
+        }
+    }
+    
+    async function alterarFuncionarioBackend(){
+        try {
+            const resposta = await fetch(urlBaseFuncionario, {
+                method: 'PUTPATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(funcionario),
+            });
+    
+            if (!resposta.ok) {
+                throw new Error('Erro ao enviar dados para o servidor');
+            }
+    
+            const resposta_funcionario = await resposta.json();
+            alert(resposta_funcionario.mensagem);
+            return true;
+        } catch (erro) {
+            alert('Não foi possível estabelecer uma comunicação com o backend: ' + erro.message);
+            return false;
+        }
     }
 
 
@@ -93,9 +114,7 @@ export default function FormularioFuncionarios(props) {
             if (!props.modoEdicaoFuncionario) {
                 if (enviarFuncionarioBackend()){
                     props.setListaFuncionarios([...props.listaFuncionarios, funcionario]);
-                } else {
-                    props.setListaFuncionarios([...props.listaFuncionarios, funcionario]);
-                }
+                } 
             }
             else{
                 const novaListaFuncionarios = props.listaFuncionarios.filter(funcionario => funcionario.Nome_func !== props.funcionarioSelecionado.Nome_func);

@@ -4,17 +4,18 @@ import React, { useState, useEffect } from 'react';
 import urlBaseItem from "../uti/configitem"
 
 export default function ExibirCadastroItens(props) {
-    
+        
     const [exibirTabelaItens, setExibirTabelaItens] = useState(true);
     const [listaItens, setListaItens] = useState([]);
     const [itemSelecionado, setItemSelecionado] = useState({});
     const [modoEdicaoItem, setModoEdicaoItem] = useState(false);
 
-    useEffect(() => {
+    //ok
+    useEffect(()=>{
         fetch(urlBaseItem,{method:"GET"})
-        .then(resposta_item => resposta_item.json())
-        .then(backend_item => setListaItens(backend_item));
-    }, []);
+        .then(resposta => resposta.json())
+        .then(item => setListaItens(item));
+    },[]);
 
     if (exibirTabelaItens) {
         return (

@@ -51,26 +51,47 @@ export default function FormularioItens(props) {
         Qtde_prod: "",
     });
 
-    function enviarItemBackend() { 
-        return fetch(urlBaseItem, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(item),
-        })
-        .then(resposta_item => {
-            if (!resposta_item.ok) {
+    //ta funcionando
+    async function enviarItemBackend() {
+        try {
+            const resposta = await fetch(urlBaseItem, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(item),
+            });
+    
+            if (!resposta.ok) {
                 throw new Error('Erro ao enviar dados para o servidor');
             }
-            return resposta_item.json();
-        })
-        .then(resposta_item => {
+    
+            const resposta_item = await resposta.json();
             alert(resposta_item.mensagem);
             return true;
-        })
-        .catch(erro => {
+        } catch (erro) {
             alert('Não foi possível estabelecer uma comunicação com o backend: ' + erro.message);
             return false;
-        });
+        }
+    }
+    
+    async function alterarItemBackend(){
+        try {
+            const resposta = await fetch(urlBaseItem, {
+                method: 'PUTPATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(item),
+            });
+    
+            if (!resposta.ok) {
+                throw new Error('Erro ao enviar dados para o servidor');
+            }
+    
+            const resposta_item = await resposta.json();
+            alert(resposta_item.mensagem);
+            return true;
+        } catch (erro) {
+            alert('Não foi possível estabelecer uma comunicação com o backend: ' + erro.message);
+            return false;
+        }
     }
 
     const [valido, setValidado] = useState(false);
